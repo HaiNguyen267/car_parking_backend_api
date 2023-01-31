@@ -1,6 +1,5 @@
-package com.example.car_parking_backend_api.model;
+package com.example.car_parking_backend_api.domain;
 
-import com.example.car_parking_backend_api.model.Spot;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ public class SimpleSpotInfo {
     private boolean isAvailable;
 
     public SimpleSpotInfo(Spot spot) {
-        this.code = spot.getCode();
+        this.code = spot.getCode().toString();
         this.isAvailable = spot.getUserId() == null;
     }
 }

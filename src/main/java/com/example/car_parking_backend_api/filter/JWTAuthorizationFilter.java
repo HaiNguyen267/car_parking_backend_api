@@ -1,13 +1,11 @@
 package com.example.car_parking_backend_api.filter;
 
-import com.example.car_parking_backend_api.model.UserPrincipal;
+import com.example.car_parking_backend_api.domain.UserPrincipal;
 import com.example.car_parking_backend_api.security.JwtProvider;
-import com.example.car_parking_backend_api.service.UserService;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.Jws;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,14 +28,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String token = authorizationHeader.substring("Bearer ".length());
-        Claims claims = JwtProvider.getClaims(token);
-        String email = claims.get("email", String.class);
-        String role = claims.get("role", String.class);
-
+        Jws<Claims> claims = JwtProvider.getClaims(token);
+        String email = claims.getBody().get("email", String.class);
+        String role = claims.getBody().get("role", String.class);
+        System.out.println("email: " + email);
+        System.out.println("role: " + role);
         UserPrincipal userPrincipal = new UserPrincipal(email, role);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        filterChain.doFilter(request, response);
     }
 }

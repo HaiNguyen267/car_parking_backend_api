@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.car_parking_backend_api.mapper.SpotMapper">
 
-    <resultMap id="spot" type="com.example.car_parking_backend_api.model.Spot">
+    <resultMap id="spot" type="com.example.car_parking_backend_api.domain.Spot">
         <result property="id" column="id" />
         <result property="code" column="code" />
         <result property="startParkingTime" column="start_parking_time" />
@@ -29,8 +29,9 @@
             s.start_parking_time AS start_parking_time,
             z.name AS zone_name
         FROM spot s
-        JOIN zone z ON s.zone_id = z.id
+        JOIN zone z ON s.zone_name = z.name
         WHERE s.start_parking_time IS NULL
         AND z.name = #{zoneName}
     </select>
+
 </mapper>

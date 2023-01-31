@@ -1,7 +1,7 @@
 package com.example.car_parking_backend_api.service;
 
-import com.example.car_parking_backend_api.model.User;
-import com.example.car_parking_backend_api.model.UserPrincipal;
+import com.example.car_parking_backend_api.domain.User;
+import com.example.car_parking_backend_api.domain.UserPrincipal;
 import com.example.car_parking_backend_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

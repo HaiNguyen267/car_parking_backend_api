@@ -2,17 +2,14 @@ package com.example.car_parking_backend_api.service;
 
 import com.example.car_parking_backend_api.dto.request.DateTimeInfo;
 import com.example.car_parking_backend_api.dto.response.ParkingLotWithEmptySpotsResponse;
+import com.example.car_parking_backend_api.dto.response.SuccessResponse;
 import com.example.car_parking_backend_api.dto.response.ZoneWithEmptySpotsResponse;
-import com.example.car_parking_backend_api.model.Spot;
-import com.example.car_parking_backend_api.model.Zone;
+import com.example.car_parking_backend_api.domain.Spot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ParkingLotService {
@@ -42,9 +39,8 @@ public class ParkingLotService {
 
     public ResponseEntity<?> getEmptySpotsByType(String zoneName) {
         List<Spot> emptySpots = spotService.getEmptySpotsByZoneName(zoneName);
-        ZoneWithEmptySpotsResponse zoneInfo = new ZoneWithEmptySpotsResponse(emptySpots);
-
-        return ResponseEntity.ok(zoneInfo);
+        SuccessResponse response = new SuccessResponse(200, "Get all empty spots by type successfully", emptySpots);
+        return ResponseEntity.ok(response);
     }
 
 

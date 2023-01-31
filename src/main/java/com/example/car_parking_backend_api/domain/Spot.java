@@ -1,21 +1,22 @@
-package com.example.car_parking_backend_api.model;
+package com.example.car_parking_backend_api.domain;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Builder
 public class Spot {
-    private int id;
-    private Long userId;
-    private String code;
-    private LocalDateTime startParkingTime;
+    private Long id;
     private String zoneName;
+    private Long code;
+    private Long userId;
+    private String startParkingTime; //TODO: this should be String
+    private String status;
 
     @Override
     public String toString() {

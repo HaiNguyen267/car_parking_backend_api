@@ -2,10 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.car_parking_backend_api.mapper.ZoneMapper">
 
+    <resultMap id="zone" type="com.example.car_parking_backend_api.domain.Zone">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="parkingFee" column="parking_fee" />
+    </resultMap>
 
     <select id="findAllZoneNames" resultType="String">
         SELECT DISTINCT name
         FROM zone
-    </select
-    >
+    </select>
+
+    <select id="findAll" resultMap="zone">
+        SELECT *
+        FROM zone
+    </select>
+
 </mapper>

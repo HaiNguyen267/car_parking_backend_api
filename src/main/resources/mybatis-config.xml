@@ -10,5 +10,6 @@
     <mappers>
         <mapper resource="mappers/SpotMapper.xml"/>
         <mapper resource="mappers/ZoneMapper.xml"/>
+        <mapper resource="mappers/UserMapper.xml"/>
     </mappers>
 </configuration>

@@ -1,13 +1,13 @@
 package com.example.car_parking_backend_api.service;
 
-import com.example.car_parking_backend_api.model.Spot;
+import com.example.car_parking_backend_api.domain.Spot;
 import com.example.car_parking_backend_api.repository.SpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SpotService {
@@ -16,7 +16,7 @@ public class SpotService {
     private SpotRepository spotRepository;
 
     public Spot getSpotByCode(String spotCode) {
-        return null;
+        return spotRepository.findByCode(spotCode);
     }
 
     public void update(Spot spot) {
@@ -24,15 +24,30 @@ public class SpotService {
     }
 
     public Spot getParkedSpotByUserId(long id) {
-        return spotRepository.findById(id);
+        return spotRepository.findByUserId(id);
     }
 
     public List<Spot> getAllSpots() {
-
         return spotRepository.findAll();
     }
 
     public List<Spot> getEmptySpotsByZoneName(String zoneName) {
         return Arrays.stream(spotRepository.findEmptySpotsByZoneName(zoneName)).toList();
+    }
+
+    public Spot getSpot(String zoneName, Long spotCode) {
+        return spotRepository.findByZoneNameAndCode(zoneName, spotCode);
+    }
+
+    public Optional<Spot> getSpotByUserId(Long userId) {
+        return spotRepository.findSpotByUserId(userId);
+    }
+
+    public void saveSpot(Spot spot) {
+        spotRepository.save(spot);
+    }
+
+    public boolean existsByCodeAndZoneName(String zoneName, Long spotCode) {
+        return spotRepository.existsByCodeAndZoneName(zoneName, spotCode);
     }
 }

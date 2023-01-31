@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ParkingRequest {
 
-    private String spotCode;
+    private String zoneName;
+    private Long spotCode;
     @JsonIgnore
     private LocalDateTime startTime;
 }

@@ -2,24 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.car_parking_backend_api.mapper.UserMapper">
 
-    <resultMap id="spot" type="com.example.car_parking_backend_api.model.User">
+    <resultMap id="user" type="com.example.car_parking_backend_api.domain.User">
         <result property="id" column="id" />
-        <result property="name" column="first_name" />
+        <result property="firstName" column="first_name" />
+        <result property="lastName" column="last_name" />
         <result property="email" column="email" />
         <result property="password" column="password" />
-        <result property="role" column="role_name" />
+        <result property="role" column="role" />
+        <result property="isLocked" column="is_locked" />
     </resultMap>
 
-    <select id="findByEmail" resultMap="spot">
+    <select id="findByEmail" resultMap="user">
         SELECT
-            u.id,
-            u.first_name,
-            u.email,
-            u.password,
-            r.name
-        FROM user u
-        JOIN user_role ur ON u.id = ur.user_id
-        JOIN role r ON ur.role_id = r.id
-        WHERE u.email = #{email}
+            id,
+            first_name,
+            last_name,
+            email,
+            password,
+            role,
+            is_locked
+        FROM user
+        WHERE email = #{email}
     </select>
+
+    <select id="findById" resultMap="user">
+        SELECT
+            id,
+            first_name,
+            last_name,
+            email,
+            password,
+            role,
+            is_locked
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="existsByEmail" resultType="java.lang.Integer">
+        SELECT id FROM user WHERE email = #{email}
+    </select>
+
+    <insert id="save">
+        INSERT INTO user (first_name, last_name, email, password, role, is_locked)
+        VALUES (#{firstName}, #{lastName}, #{email}, #{password}, #{role}, #{isLocked})
+    </insert>
+
+
+
 </mapper>

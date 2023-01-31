@@ -1,7 +1,7 @@
 package com.example.car_parking_backend_api.dto.response;
 
-import com.example.car_parking_backend_api.model.SimpleSpotInfo;
-import com.example.car_parking_backend_api.model.Spot;
+import com.example.car_parking_backend_api.domain.SimpleSpotInfo;
+import com.example.car_parking_backend_api.domain.Spot;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -4,7 +4,8 @@ import com.example.car_parking_backend_api.dto.request.ParkingRequest;
 import com.example.car_parking_backend_api.dto.response.ErrorResponse;
 import com.example.car_parking_backend_api.dto.response.ParkingBill;
 import com.example.car_parking_backend_api.dto.response.SuccessResponse;
-import com.example.car_parking_backend_api.model.User;
+import com.example.car_parking_backend_api.domain.User;
+import com.example.car_parking_backend_api.service.DriverService;
 import com.example.car_parking_backend_api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,19 +13,47 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-public class UserController {
+@RequestMapping("/api/driver")
+@AllArgsConstructor
+public class DriverController {
+//TODO: swagger for this controller
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final DriverService driverService;
 
 
-
+/*
+//    @Operation(summary = "Register a new user")
+//    @ApiResponses({
+//            @ApiResponse(
+//                    responseCode = "200",
+//                    description = "Register new user",
+//                    content = @Content(
+//                            schema = @Schema(implementation = LoginResponse.class)
+//                    )
+//            ),
+//            @ApiResponse(
+//                    responseCode = "400",
+//                    description = "Email was already taken",
+//                    content = @Content(
+//                            schema = @Schema(implementation = ErrorResponse.class)
+//                    )
+//            )
+//    })
+//    @PostMapping("/register")
+//    public ResponseEntity<?> register(@RequestBody RegistrationRequest user) {
+//        return userService.register(user);
+//    }
+*/
     //TODO: user cannot park if he has already parked
     @Operation(summary = "User park a car")
     @ApiResponses({
@@ -85,7 +114,8 @@ public class UserController {
     @PostMapping("/park")
     public ResponseEntity<?> park(@RequestBody ParkingRequest parkingRequest) {
         User user = getCurrentLoginUser();
-        return userService.park(user, parkingRequest);
+        System.out.println("current login user = " + user);
+        return driverService.park(user, parkingRequest);
     }
 
 
@@ -116,13 +146,15 @@ public class UserController {
                                         "message": "You have not parked a car"
                                     }
                                     """)
+
+
                     )
             )
     })
     @GetMapping("/bill")
-    public ResponseEntity<?> bill() {
+    public ResponseEntity<?> getParkingBill() {
         User user = getCurrentLoginUser();
-        return userService.getParkingBill(user);
+        return driverService.getParkingBill(user);
     }
 
 
@@ -156,15 +188,19 @@ public class UserController {
                     )
             )
     })
-    @PostMapping("//backout")
+    @PostMapping("/backout")
     public ResponseEntity<?> backOut() {
         User user = getCurrentLoginUser();
-        return userService.backOut(user);
+        return driverService.backOut(user);
     }
 
+
+
     private User getCurrentLoginUser() {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        String userEmail = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userService.getUserByEmail(userEmail);
+//        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+//        return userService.getUserByEmail(userEmail);
     }
 
 }

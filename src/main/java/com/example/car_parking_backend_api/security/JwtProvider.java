@@ -1,50 +1,47 @@
 package com.example.car_parking_backend_api.security;
 
-import com.example.car_parking_backend_api.model.User;
+import com.example.car_parking_backend_api.domain.AccessToken;
+import com.example.car_parking_backend_api.domain.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
-import java.time.LocalDateTime;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
 public class JwtProvider {
+    private static final String SECRET_KEY = "23402523535203523kfsmdfmdfmadomoqmoimiom1241424";
+    private static final long EXPIRATION_INTERVAL = 1000L * 60 * 60 * 24 * 30;// 30 day
+    public static AccessToken generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole());
+        claims.put("email", user.getEmail());
 
-    private static final long INTERVAL = 1000 * 60 * 60 * 24 * 30; // 30 days
-    private static final String SECRET_KEY = "o92-m9caj2042j2l421";
-
-    public static String generateToken(User user) {
-        String email = user.getEmail();
-        String role = user.getRole();
-
-        Map<String, String> claims = Map.of(
-                "email", email,
-                "role", role
-        );
         long now = new Date().getTime();
+
         String accessToken = Jwts.builder()
-                .setSubject(email)
+                .setSubject(user.getEmail())
                 .setClaims(claims)
-                .setIssuedAt(new java.util.Date())
-                .setExpiration(new Date(now + INTERVAL))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + EXPIRATION_INTERVAL))
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
                 .compact();
-        return accessToken;
+
+        return new AccessToken(accessToken);
     }
 
-    public static Claims getClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            //TODO: InValidTokenException
-            return null;
-        }
+    public static Jws<Claims> getClaims(String token) {
+        SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+
+        Jws<Claims> claimsJws = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
+        return claimsJws;
     }
-
-
 }
