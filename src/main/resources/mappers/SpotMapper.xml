@@ -6,9 +6,10 @@
         <result property="id" column="id" />
         <result property="code" column="code" />
         <result property="startParkingTime" column="start_parking_time" />
+        <result property="userId" column="user_id" />
         <result property="zoneName" column="zone_name" />
+        <result property="status" column="status" />
     </resultMap>
-
 
     <select id="findAll" resultMap="spot">
         SELECT
@@ -18,20 +19,27 @@
             z.name AS zone_name
         FROM spot s
         JOIN zone z ON s.zone_id = z.id
-    </select
-    >
+    </select>
 
 
     <select id="findEmptySpotsByZoneName" resultMap="spot">
-        SELECT
-            s.id AS id,
-            s.code AS code,
-            s.start_parking_time AS start_parking_time,
-            z.name AS zone_name
-        FROM spot s
-        JOIN zone z ON s.zone_name = z.name
-        WHERE s.start_parking_time IS NULL
-        AND z.name = #{zoneName}
+        SELECT *
+        FROM spot
+        WHERE start_parking_time IS NULL
+        AND zone_name = #{zoneName}
     </select>
 
+
+    <select id="findByZoneNameAndCode" resultMap="spot">
+        SELECT *
+        FROM spot
+        WHERE zone_name = #{zoneName}
+        AND code = #{spotCode}
+    </select>
+
+    <select id="findByUserId" resultMap="spot">
+        SELECT *
+        FROM spot
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

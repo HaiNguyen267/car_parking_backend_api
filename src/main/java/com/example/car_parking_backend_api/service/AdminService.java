@@ -2,14 +2,15 @@ package com.example.car_parking_backend_api.service;
 
 import com.example.car_parking_backend_api.dto.request.RegistrationRequest;
 import com.example.car_parking_backend_api.dto.response.SuccessResponse;
+import com.example.car_parking_backend_api.dto.response.UserDTO;
+import com.example.car_parking_backend_api.enums.EventLog;
 import com.example.car_parking_backend_api.exception.NotFoundException;
 import com.example.car_parking_backend_api.exception.RegistrationException;
 import com.example.car_parking_backend_api.exception.UserChangeAccessException;
-import com.example.car_parking_backend_api.domain.AccessToken;
 import com.example.car_parking_backend_api.domain.User;
 import com.example.car_parking_backend_api.domain.UserLog;
-import com.example.car_parking_backend_api.security.JwtProvider;
 import com.example.car_parking_backend_api.security.Role;
+import com.example.car_parking_backend_api.utils.TimeUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ public class AdminService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<?> registerManager(RegistrationRequest registrationRequest) {
+    public ResponseEntity<?> registerManager(User currentAdmin, RegistrationRequest registrationRequest) {
         String email = registrationRequest.getEmail();
 
         if (userService.existsByEmail(email)) {
@@ -40,18 +41,25 @@ public class AdminService {
 
         userService.save(user);
 
-        //TODO: log for admin when register a new manager
+        // create log
+        String event = EventLog.REGISTER_MANAGER + " with id=" + user.getId();
+        UserLog userLog = new UserLog(currentAdmin.getId(), event);
+        userLogService.saveUserLog(userLog);
+
         SuccessResponse response = new SuccessResponse(200, "Registration successful");
         return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<?> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        List<UserDTO> userDTOS = users.stream().map(UserDTO::new).toList();
+
+        SuccessResponse response = new SuccessResponse(200, "Get all users successfully", userDTOS);
+        return ResponseEntity.ok(response);
     }
 
 
-    public ResponseEntity<?> lockUser(Long userId) {
+    public ResponseEntity<?> lockUser(User currentAdmin, Long userId) {
         checkAndThrowExceptionIfUserNotFound(userId);
         User user = userService.getUserById(userId);
 
@@ -59,14 +67,19 @@ public class AdminService {
             throw new UserChangeAccessException("User with id " + userId + " is already locked");
         }
 
-        //tODO: log for admin when lock a user
         user.setLocked(true);
-        userService.save(user);
+        userService.update(user);
+
+        // create log
+        String event = EventLog.LOCK_USER + " with id=" + userId;
+        UserLog userLog = new UserLog(currentAdmin.getId(), event);
+        userLogService.saveUserLog(userLog);
+
         SuccessResponse response = new SuccessResponse(200, "User is locked successfully");
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> unlockUser(Long userId) {
+    public ResponseEntity<?> unlockUser(User currentAdmin, Long userId) {
         checkAndThrowExceptionIfUserNotFound(userId);
         User user = userService.getUserById(userId);
 
@@ -74,9 +87,15 @@ public class AdminService {
             throw new UserChangeAccessException("User with id " + userId + " is already unlocked");
         }
 
-        //TODO: log for admin when unlock a user
         user.setLocked(false);
-        userService.save(user);
+
+        userService.update(user);
+
+        // create log
+        String event = EventLog.UNLOCK_USER + " with id=" + userId;
+        UserLog userLog = new UserLog(currentAdmin.getId(), event);
+        userLogService.saveUserLog(userLog);
+
         SuccessResponse response = new SuccessResponse(200, "User is unlocked successfully");
         return ResponseEntity.ok(response);
     }

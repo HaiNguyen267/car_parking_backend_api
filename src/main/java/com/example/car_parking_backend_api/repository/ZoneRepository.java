@@ -16,7 +16,7 @@ public class ZoneRepository {
     private ZoneMapper zoneMapper;
 
     public List<String> findAllZoneNames() {
-        return Arrays.stream(zoneMapper.findAllZoneNames()).toList();
+        return zoneMapper.findAllZoneNames();
 
     }
 

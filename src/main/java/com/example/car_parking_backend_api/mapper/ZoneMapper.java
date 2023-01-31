@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @Mapper
 public interface ZoneMapper {
-    String[] findAllZoneNames();
+    @Select("SELECT DISINCE name FROM zone")
+    List<String> findAllZoneNames();
 
-    @Select("SELECT * FROM zone WHERE name = #{zoneName} LIMIT 1")
     Optional<Zone> findZoneByName(String zoneName);
 
     List<Zone> findAll();

@@ -19,4 +19,13 @@ public class SpotLogService {
     public List<SpotLog> findSpotLogsBySpotId(Long spotId) {
         return spotLogRepository.findSpotLogsBySpotId(spotId);
     }
+
+
+    public void saveSpotLog(SpotLog spotLog) {
+        spotLogRepository.save(spotLog);
+    }
+
+    public List<SpotLog> findSpotLogsByZoneNameAndSpotCode(String zoneName, Long spotCode) {
+        return spotLogRepository.findSpotLogsByZoneNameAndSpotCode(zoneName, spotCode);
+    }
 }

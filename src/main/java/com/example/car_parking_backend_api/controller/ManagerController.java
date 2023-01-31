@@ -21,23 +21,11 @@ public class ManagerController {
 
     private final ManagerService managerService;
     private final UserService userService;
-    //TODO:
-    // add zone
-    // set pricing for zone (per hour)
-    // add spots to zone
-    // add spots to zone from to
-    // lock a spot
-    // unlock a spot
-    // view parking history of a user
-    // view parking history of a spot
-
-    private ZoneService zoneService;
 
 
     @PostMapping("/add-zone")
     public ResponseEntity<?> addZone(@RequestBody AddZoneRequest addZoneRequest) {
         User currentManager = getCurrentManager();
-        System.out.println("currentManager " + currentManager.getRole());
         return managerService.addZone(currentManager, addZoneRequest);
     }
 
@@ -86,9 +74,9 @@ public class ManagerController {
         return managerService.viewParkingHistoryOfUser(userId);
     }
 
-    @GetMapping("/view-parking-history-of-spot/{spotId}")
-    public ResponseEntity<?> viewParkingHistoryOfSpot(@PathVariable Long spotId) {
-        return managerService.viewParkingHistoryOfSpot(spotId);
+    @GetMapping("/view-parking-history-of-spot/{zoneName}/{spotCode}")
+    public ResponseEntity<?> viewParkingHistoryOfSpot(@PathVariable String zoneName, @PathVariable Long spotCode) {
+        return managerService.viewParkingHistoryOfSpot(zoneName, spotCode);
     }
 
     private User getCurrentManager() {

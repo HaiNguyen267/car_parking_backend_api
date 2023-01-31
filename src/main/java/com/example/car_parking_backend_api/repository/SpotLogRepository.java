@@ -20,4 +20,12 @@ public class SpotLogRepository {
     public List<SpotLog> findSpotLogsBySpotId(Long spotId) {
         return spotLogMapper.findSpotLogsBySpotId(spotId);
     }
+
+    public void save(SpotLog spotLog) {
+        spotLogMapper.save(spotLog);
+    }
+
+    public List<SpotLog> findSpotLogsByZoneNameAndSpotCode(String zoneName, Long spotCode) {
+        return spotLogMapper.findSpotLogsByZoneNameAndSpotCode(zoneName, spotCode);
+    }
 }

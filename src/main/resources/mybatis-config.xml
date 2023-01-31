@@ -8,8 +8,6 @@
         <package name="com.example.car_parking_backend_api.mapper"/>
     </typeAliases>
     <mappers>
-        <mapper resource="mappers/SpotMapper.xml"/>
-        <mapper resource="mappers/ZoneMapper.xml"/>
-        <mapper resource="mappers/UserMapper.xml"/>
+        <mapper resource="mappers/*"/>
     </mappers>
 </configuration>

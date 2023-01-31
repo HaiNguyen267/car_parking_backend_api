@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.car_parking_backend_api.mapper.SpotLogMapper">
+
+    <resultMap id="spotLog" type="com.example.car_parking_backend_api.domain.SpotLog">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="spotId" column="spot_id"/>
+        <result property="event" column="event"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="findSpotLogsByUserId" resultMap="spotLog">
+        SELECT *
+        FROM spot_log
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="findSpotLogsBySpotId" resultMap="spotLog">
+        SELECT *
+        FROM spot_log
+        WHERE spot_id = #{spotId}
+    </select>
+
+    <select id="findSpotLogsByZoneNameAndSpotCode" resultMap="spotLog">
+        SELECT sl.id as id,
+            sl.user_id as user_id,
+            sl.spot_id as spot_id,
+            sl.event as event,
+            sl.created_at as created_at
+        FROM spot_log sl
+        JOIN spot s ON sl.spot_id = sl.id = s.id
+        WHERE s.zone_name = #{zoneName}
+        AND s.code = #{spotCode}
+    </select>
+</mapper>

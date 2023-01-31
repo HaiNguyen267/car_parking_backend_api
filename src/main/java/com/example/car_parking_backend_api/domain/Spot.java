@@ -15,7 +15,7 @@ public class Spot {
     private String zoneName;
     private Long code;
     private Long userId;
-    private String startParkingTime; //TODO: this should be String
+    private String startParkingTime;
     private String status;
 
     @Override

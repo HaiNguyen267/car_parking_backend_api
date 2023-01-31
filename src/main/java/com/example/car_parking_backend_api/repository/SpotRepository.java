@@ -31,7 +31,7 @@ public class SpotRepository {
         return spotMapper.findAll();
     }
 
-    public Spot[] findEmptySpotsByZoneName(String zoneName) {
+    public List<Spot> findEmptySpotsByZoneName(String zoneName) {
         return spotMapper.findEmptySpotsByZoneName(zoneName);
     }
 
@@ -40,9 +40,6 @@ public class SpotRepository {
 
     }
 
-    public Spot findByUserId(long id) {
-        return spotMapper.findByUserId(id);
-    }
 
     public Spot findByZoneNameAndCode(String zoneName, Long spotCode) {
         return spotMapper
@@ -54,6 +51,6 @@ public class SpotRepository {
         return spotMapper.findByZoneNameAndCode(zoneName, spotCode).isPresent();
     }
     public Optional<Spot> findSpotByUserId(Long userId) {
-        return spotMapper.findSpotByUserId(userId);
+        return spotMapper.findByUserId(userId);
     }
 }

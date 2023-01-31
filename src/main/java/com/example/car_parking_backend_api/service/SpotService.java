@@ -1,6 +1,7 @@
 package com.example.car_parking_backend_api.service;
 
 import com.example.car_parking_backend_api.domain.Spot;
+import com.example.car_parking_backend_api.exception.ParkingException;
 import com.example.car_parking_backend_api.repository.SpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class SpotService {
     }
 
     public Spot getParkedSpotByUserId(long id) {
-        return spotRepository.findByUserId(id);
+        return spotRepository.findSpotByUserId(id).orElseThrow(() -> new ParkingException("User has not parked a car yet"));
     }
 
     public List<Spot> getAllSpots() {
@@ -32,7 +33,7 @@ public class SpotService {
     }
 
     public List<Spot> getEmptySpotsByZoneName(String zoneName) {
-        return Arrays.stream(spotRepository.findEmptySpotsByZoneName(zoneName)).toList();
+        return spotRepository.findEmptySpotsByZoneName(zoneName);
     }
 
     public Spot getSpot(String zoneName, Long spotCode) {

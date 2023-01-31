@@ -27,4 +27,5 @@ public class User {
         this.email = registrationRequest.getEmail();
         this.isLocked = false;
     }
+
 }

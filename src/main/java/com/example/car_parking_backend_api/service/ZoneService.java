@@ -75,4 +75,11 @@ public class ZoneService {
         SuccessResponse successResponse = new SuccessResponse(200, "Get pricing details successfully", pricingByZone);
         return ResponseEntity.ok(successResponse);
     }
+
+    public ResponseEntity<?> getAllEmptySpotsByName(String zoneName) {
+        List<Spot> spots = spotService.getEmptySpotsByZoneName(zoneName);
+        List<SpotDTO> spotDTOs = spots.stream().map(SpotDTO::new).toList();
+        SuccessResponse response = new SuccessResponse(200, "Get all empty spots by zone name successfully", spotDTOs);
+        return ResponseEntity.ok(response);
+    }
 }

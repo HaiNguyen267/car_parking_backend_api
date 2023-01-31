@@ -16,4 +16,8 @@ public class UserLogRepository {
     public List<UserLog> getUserLogs(Long userId) {
         return userLogMapper.getUserLogs(userId);
     }
+
+    public void saveUserLog(UserLog userLog) {
+        userLogMapper.saveUserLog(userLog);
+    }
 }

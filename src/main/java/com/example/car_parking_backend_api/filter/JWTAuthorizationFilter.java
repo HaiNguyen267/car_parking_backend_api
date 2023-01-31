@@ -31,8 +31,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         Jws<Claims> claims = JwtProvider.getClaims(token);
         String email = claims.getBody().get("email", String.class);
         String role = claims.getBody().get("role", String.class);
-        System.out.println("email: " + email);
-        System.out.println("role: " + role);
+
         UserPrincipal userPrincipal = new UserPrincipal(email, role);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());

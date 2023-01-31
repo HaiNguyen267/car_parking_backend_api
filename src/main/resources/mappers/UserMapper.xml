@@ -9,7 +9,7 @@
         <result property="email" column="email" />
         <result property="password" column="password" />
         <result property="role" column="role" />
-        <result property="isLocked" column="is_locked" />
+        <result property="isLocked" column="is_locked" javaType="boolean"/>
     </resultMap>
 
     <select id="findByEmail" resultMap="user">
@@ -38,7 +38,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="existsByEmail" resultType="java.lang.Integer">
+    <select id="existsByE   mail" resultType="java.lang.Integer">
         SELECT id FROM user WHERE email = #{email}
     </select>
 
@@ -47,6 +47,11 @@
         VALUES (#{firstName}, #{lastName}, #{email}, #{password}, #{role}, #{isLocked})
     </insert>
 
+
+    <select id="findAll" resultMap="user">
+        SELECT *
+        FROM user
+    </select>
 
 
 </mapper>
