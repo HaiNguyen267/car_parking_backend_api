@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CarParkingBackendApiApplication {
-//TODO: - finish all endpoints
 //TODO: test the app
-//TODO: write test for the app
 //TODO: swagger for the controller
 //TODO: documentation for the app (authorization matrix, state-transfer, ER diagrams)
 	public static void main(String[] args) {

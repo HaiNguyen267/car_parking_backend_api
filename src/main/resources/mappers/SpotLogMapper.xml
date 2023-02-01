@@ -29,7 +29,7 @@
             sl.event as event,
             sl.created_at as created_at
         FROM spot_log sl
-        JOIN spot s ON sl.spot_id = sl.id = s.id
+        JOIN spot s ON sl.spot_id = s.id
         WHERE s.zone_name = #{zoneName}
         AND s.code = #{spotCode}
     </select>

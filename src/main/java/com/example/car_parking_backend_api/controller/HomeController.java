@@ -26,7 +26,6 @@ public class HomeController {
         return zoneService.getAllEmptySpotsByName(zoneType);
     }
 
-
     @GetMapping("/pricingDetails")
     public ResponseEntity<?> getPricingDetails() {
         return zoneService.getPricingDetails();

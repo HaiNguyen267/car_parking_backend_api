@@ -19,15 +19,12 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
 
-
-
     @PostMapping("/register-manager")
     public ResponseEntity<?> registerManager(@RequestBody RegistrationRequest registrationRequest) {
         //TODO: get current admin
         User currentAdmin = getCurrentAdmin();
         return adminService.registerManager(currentAdmin, registrationRequest);
     }
-
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
@@ -39,7 +36,6 @@ public class AdminController {
         User currentAdmin = getCurrentAdmin();
         return adminService.lockUser(currentAdmin, userId);
     }
-
 
     @PostMapping("/users/{userId}/unlock")
     public ResponseEntity<?> unlockUser(@PathVariable Long userId) {

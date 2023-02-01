@@ -50,7 +50,6 @@ public class AuthService {
             SuccessResponse response = new SuccessResponse(200,"Login successful", accessToken);
             return ResponseEntity.ok(response);
         } else {
-            //TODO: WrongUsernameOrPassword
             throw new WrongCredentialsException("Wrong username or password");
 
         }
@@ -67,8 +66,10 @@ public class AuthService {
         User user = new User(registrationRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER.name());
-
         userService.save(user);
+
+        // to get the id of the user after saving
+        user = userService.getUserByEmail(email);
 
         // create user log
         String event = EventLog.REGISTER + " with email=" + user.getEmail();

@@ -35,7 +35,6 @@ public class DriverController {
     @PostMapping("/park")
     public ResponseEntity<?> park(@RequestBody ParkingRequest parkingRequest) {
         User user = getCurrentLoginUser();
-        System.out.println("current login user = " + user);
         return driverService.park(user, parkingRequest);
     }
 

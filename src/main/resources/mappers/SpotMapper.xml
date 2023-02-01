@@ -35,6 +35,7 @@
         FROM spot
         WHERE zone_name = #{zoneName}
         AND code = #{spotCode}
+
     </select>
 
     <select id="findByUserId" resultMap="spot">
